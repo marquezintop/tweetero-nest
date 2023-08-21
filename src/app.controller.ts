@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PostUserDto } from './dtos/user.dtos';
 
@@ -6,7 +6,8 @@ import { PostUserDto } from './dtos/user.dtos';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get("/health")
+  @Get("/")
+  @HttpCode(200)
   getHealth(): string {
     return this.appService.getHealth();
   }
@@ -28,6 +29,7 @@ export class AppController {
   }
 
   @Post("/sign-up")
+  @HttpCode(200)
   postUser(@Body() body: PostUserDto) {
     try {
       return this.appService.createUser(body);

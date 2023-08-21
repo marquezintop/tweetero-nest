@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { User } from "src/entities/user.entity";
 
-export class CreateTweetDto {
+export class PostTweetDto {
     @IsNotEmpty()
     user: User;
 
