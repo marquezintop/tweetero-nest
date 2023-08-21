@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PostUserDto } from './dtos/user.dtos';
+import { PostTweetDto } from './dtos/tweet.dtos';
 
 @Controller()
 export class AppController {
@@ -35,6 +36,16 @@ export class AppController {
       return this.appService.createUser(body);
     } catch (error) {
       throw new HttpException("Cannot create user", HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Post("/tweets")
+  @HttpCode(201)
+  createTweet(@Body() body: PostTweetDto) {
+    try {
+      this.appService.createTweet(body.username, body.tweet);
+    } catch (error) {
+      throw new HttpException(`You must be logged to post a tweet!`, HttpStatus.UNAUTHORIZED);
     }
   }
 }

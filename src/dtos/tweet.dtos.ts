@@ -1,11 +1,11 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { User } from "src/entities/user.entity";
 
 export class PostTweetDto {
-    @IsNotEmpty()
-    user: User;
+    @IsNotEmpty({ message: 'All fields are required!' })
+    @IsString()
+    username: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'All fields are required!' })
     tweet: string;
 }
