@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PostUserDto } from './dtos/user.dtos';
 import { PostTweetDto } from './dtos/tweet.dtos';
@@ -19,14 +19,17 @@ export class AppController {
   }
 
   @Get("/tweets")
-  getTweets() {
-    return this.appService.listTweets();
+  getTweets(@Query('page') page: number = 1) {
+      if (isNaN(page) || page < 1) {
+        throw new HttpException('Invalid page number!', HttpStatus.BAD_REQUEST);
+      }
+  
+      return this.appService.listTweets(page);
   }
 
   @Get("/tweets/:username")
   findOne(@Param("username") username: string) {
-    console.log(username);
-    return username;
+    return this.appService.listUserTweets(username);
   }
 
   @Post("/sign-up")

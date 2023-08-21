@@ -22,8 +22,20 @@ export class AppService {
     return this.users;
   }
 
-  listTweets() {
-    return this.tweets;
+  listTweets(page: number): Tweet[] {
+    const tweetsPerPage = 15;
+    const firstTweetIndex = (page - 1) * tweetsPerPage;
+    const lastTweetIndex = firstTweetIndex + tweetsPerPage;
+
+    return this.tweets.slice(firstTweetIndex, lastTweetIndex);
+  }
+
+  listUserTweets(username: string): Tweet[] {
+    const userTweets: Tweet[] = this.tweets.filter((tweet) => {
+      return tweet.getUsername() === username
+    })
+
+    return userTweets;
   }
 
   createUser(body: PostUserDto) {
@@ -38,7 +50,7 @@ export class AppService {
       throw error;
     }
 
-    const newTweet = new Tweet(user, tweet);
+    const newTweet = new Tweet(user.username, tweet, user.avatar);
     this.tweets.push(newTweet);
   }
 
